@@ -1,0 +1,509 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Painel Val Premiações</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#f4f1ea">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230a0c0a'/%3E%3Cg fill='%232fbf5b'%3E%3Ccircle cx='38' cy='38' r='17'/%3E%3Ccircle cx='62' cy='38' r='17'/%3E%3Ccircle cx='38' cy='62' r='17'/%3E%3Ccircle cx='62' cy='62' r='17'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=JetBrains+Mono:wght@600;800&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f4f1ea;--card:#fff;--ink:#141414;--ink2:#4a463d;--ink3:#77715f;--line:#e2dccd;--line2:#cfc7b3;--gold:#9a6b00;--goldbg:#fff3cf;--green:#157a37;--greenbg:#dcf3e3;--red:#b42318;--redbg:#fde3e0;--blue:#1d4ed8;--bluebg:#e0e8ff;--dark:#0a0c0a;
+--mono:'JetBrains Mono',ui-monospace,monospace;--disp:'Bricolage Grotesque',system-ui,sans-serif;--body:'Manrope',system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font:600 16px/1.5 var(--body);min-height:100vh}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+input,select{font:inherit;color:inherit}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.mono{font-family:var(--mono)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:0 18px;border-radius:12px;font-weight:800;font-size:15.5px;text-decoration:none;border:2px solid transparent;white-space:nowrap}
+.btn.k{background:var(--dark);color:#fff}
+.btn.k:hover{background:#2a2f2a}
+.btn.g{background:var(--green);color:#fff}
+.btn.o{border-color:var(--line2);background:#fff}
+.btn.o:hover{border-color:var(--ink)}
+.btn.r{background:var(--redbg);color:var(--red)}
+.btn.s{min-height:38px;padding:0 12px;font-size:14px;border-radius:10px}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn svg{width:18px;height:18px;flex:none}
+/* login */
+.login{min-height:100vh;display:grid;place-items:center;padding:20px;background:var(--dark)}
+.login .cx{background:#fff;border-radius:24px;padding:34px;max-width:420px;width:100%}
+.login h1{font:800 30px/1.05 var(--disp);margin:18px 0 8px}
+.login p{color:var(--ink2)}
+.login label{display:block;margin:16px 0 6px;font-size:14.5px;color:var(--ink2)}
+.login input{width:100%;min-height:52px;border-radius:12px;border:2px solid var(--line2);padding:0 14px;font-size:17px}
+.login .btn{width:100%;margin-top:20px;min-height:54px;font-size:17px}
+.login small{display:block;margin-top:14px;color:var(--ink3);font-size:13.5px;text-align:center}
+/* layout */
+.app{display:grid;grid-template-columns:240px minmax(0,1fr);min-height:100vh}
+.side{background:var(--dark);color:#fff;padding:20px 14px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:4px}
+.side .marca{display:flex;align-items:center;gap:10px;padding:4px 8px 20px}
+.side .marca b{font:800 22px/1 var(--disp)}
+.side .marca small{display:block;font:700 10px/1 var(--body);letter-spacing:.3em;text-transform:uppercase;color:#f2c64e;margin-top:3px}
+.nv{display:flex;align-items:center;gap:12px;padding:12px 12px;border-radius:12px;font-weight:700;font-size:15.5px;color:#c9c5b8;text-align:left;width:100%;position:relative}
+.nv svg{width:20px;height:20px;flex:none}
+.nv:hover{background:rgba(255,255,255,.07);color:#fff}
+.nv[aria-current=page]{background:#fff;color:var(--ink)}
+.nv .bd{margin-left:auto;background:#f2c64e;color:#1b1404;font:800 12px/1 var(--mono);padding:4px 7px;border-radius:99px}
+.side .rod{margin-top:auto;font-size:12.5px;color:#8f8b7e;padding:8px}
+.side .rod a{color:#c9c5b8}
+main{padding:28px clamp(16px,3vw,40px) 110px;min-width:0}
+.cab{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:end;justify-content:space-between;margin-bottom:22px}
+.cab h1{font:800 clamp(28px,3vw,38px)/1.05 var(--disp);letter-spacing:-.02em}
+.cab p{color:var(--ink2);margin-top:6px}
+.demo-bar{background:var(--goldbg);color:#5c4200;border:1px solid #f0d68a;border-radius:12px;padding:10px 14px;font-size:14px;margin-bottom:18px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.demo-bar a{font-weight:800}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:22px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px}
+.kpi span{display:block;font-size:14px;color:var(--ink2)}
+.kpi b{display:block;font:800 clamp(24px,2.4vw,32px)/1.1 var(--mono);margin-top:8px}
+.kpi small{display:block;color:var(--ink3);font-size:13.5px;margin-top:6px}
+.kpi.dest{background:var(--dark);color:#fff;border-color:var(--dark)}
+.kpi.dest span,.kpi.dest small{color:#c9c5b8}
+.kpi.dest b{color:#f2c64e}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;margin-bottom:18px}
+.card h2{font:800 20px/1.2 var(--disp);margin-bottom:4px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.card .sub{color:var(--ink2);font-size:14.5px;margin-bottom:14px}
+.g2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px}
+.acao{display:flex;align-items:center;gap:14px;padding:14px 0;border-top:1px solid var(--line);flex-wrap:wrap}
+.acao:first-of-type{border-top:0}
+.acao .ic{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;flex:none;font-size:20px}
+.acao .tx{flex:1;min-width:180px}
+.acao .tx b{display:block}
+.acao .tx span{color:var(--ink2);font-size:14.5px}
+.acao .bt{display:flex;gap:8px;flex-wrap:wrap}
+.vazio{color:var(--ink3);padding:10px 0}
+.tag{display:inline-flex;align-items:center;gap:6px;font:800 12.5px/1 var(--mono);padding:6px 9px;border-radius:99px;white-space:nowrap}
+.tag.ab{background:var(--greenbg);color:var(--green)}
+.tag.en{background:var(--goldbg);color:var(--gold)}
+.tag.ap{background:#ecebe6;color:var(--ink2)}
+.tag.pg{background:var(--greenbg);color:var(--green)}
+.tag.rs{background:var(--goldbg);color:var(--gold)}
+.tag.ex{background:#ecebe6;color:var(--ink3)}
+.tag.cn{background:var(--redbg);color:var(--red)}
+.tag.win{background:var(--dark);color:#f2c64e}
+.prog{height:8px;background:#ecebe6;border-radius:9px;overflow:hidden;margin-top:8px}
+.prog i{display:block;height:100%;background:var(--green);border-radius:9px}
+.tabela{width:100%;border-collapse:collapse;font-size:15px}
+.tabela th{text-align:left;font:800 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);padding:10px 12px;border-bottom:2px solid var(--line)}
+.tabela td{padding:12px;border-bottom:1px solid var(--line);vertical-align:middle}
+.tabela tr.click{cursor:pointer}
+.tabela tr.click:hover td{background:#faf8f3}
+.tabela .num{font:800 15px var(--mono)}
+.rolar{overflow-x:auto;margin:0 -20px;padding:0 20px}
+.filtros{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;align-items:center}
+.chip{min-height:40px;padding:0 14px;border-radius:99px;border:2px solid var(--line2);background:#fff;font-weight:800;font-size:14.5px}
+.chip[aria-pressed=true]{background:var(--dark);border-color:var(--dark);color:#fff}
+.busca{flex:1 1 220px;min-height:44px;border-radius:12px;border:2px solid var(--line2);padding:0 14px;background:#fff}
+.sorteios{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
+.st{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;text-align:left;display:block;width:100%;transition:border-color .15s,transform .15s}
+.st:hover{border-color:var(--ink);transform:translateY(-2px)}
+.st .top{display:flex;justify-content:space-between;align-items:start;gap:10px}
+.st .hr{font:800 30px/1 var(--mono)}
+.st .q{font-weight:800;margin-top:10px}
+.st .q span{color:var(--ink2);font-weight:600;font-size:14px;display:block}
+.st .nums{display:flex;justify-content:space-between;margin-top:12px;font-size:14px;color:var(--ink2)}
+.st .nums b{color:var(--ink);font-family:var(--mono)}
+/* modal */
+dialog{border:0;padding:0;border-radius:22px;max-width:min(860px,calc(100vw - 20px));width:100%;margin:auto;color:var(--ink);background:var(--bg)}
+dialog.p{max-width:min(520px,calc(100vw - 20px))}
+dialog::backdrop{background:rgba(10,12,10,.6)}
+.mcx{padding:22px;max-height:calc(100svh - 30px);overflow:auto}
+.mcab{display:flex;justify-content:space-between;align-items:start;gap:12px;margin-bottom:14px}
+.mcab h3{font:800 24px/1.1 var(--disp)}
+.mcab p{color:var(--ink2);font-size:14.5px;margin-top:4px}
+.fx{width:42px;height:42px;border-radius:50%;background:#fff;border:1px solid var(--line);font-size:22px;flex:none}
+.grd{display:grid;gap:5px}
+.grd.dz{grid-template-columns:repeat(10,minmax(0,1fr))}
+.grd.gr{grid-template-columns:repeat(5,minmax(0,1fr))}
+.c{aspect-ratio:1;border-radius:9px;border:2px solid var(--line2);background:#fff;font:800 14px/1 var(--mono);display:grid;place-items:center;position:relative;padding:2px}
+.grd.gr .c{aspect-ratio:auto;min-height:64px;font-size:12.5px;gap:2px;align-content:center;text-align:center}
+.grd.gr .c i{font-style:normal;font-size:20px}
+.c.pg{background:var(--dark);color:#fff;border-color:var(--dark)}
+.c.rs{background:var(--goldbg);border-color:#e7c25a;color:var(--gold)}
+.c.mk{background:#f2c64e;border-color:var(--gold);color:#1b1404}
+.c.win{outline:4px solid var(--green);outline-offset:1px}
+.c:not(.pg):not(.rs):hover{border-color:var(--ink)}
+.c small{display:block;font:700 9.5px/1.1 var(--body);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%;opacity:.8}
+.leg2{display:flex;gap:14px;flex-wrap:wrap;font-size:13.5px;color:var(--ink2);margin:10px 0 14px}
+.leg2 span{display:inline-flex;gap:6px;align-items:center}
+.leg2 i{width:14px;height:14px;border-radius:4px;display:inline-block;border:2px solid var(--line2)}
+.fld{display:block;margin-top:12px}
+.fld span{display:block;font-size:14px;color:var(--ink2);margin-bottom:6px}
+.fld input,.fld select{width:100%;min-height:48px;border-radius:12px;border:2px solid var(--line2);padding:0 12px;background:#fff;font-weight:700}
+.fld input:focus,.fld select:focus{outline:none;border-color:var(--ink)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:end}
+.row>*{flex:1 1 140px}
+.preview{margin-top:14px;padding:16px;border-radius:14px;background:#fff;border:2px dashed var(--line2);font-size:15.5px}
+.preview b.big{font:800 26px var(--mono)}
+.dias{display:flex;gap:6px;flex-wrap:wrap}
+.dias label{display:inline-flex}
+.dias input{position:absolute;opacity:0;pointer-events:none}
+.dias span{min-width:44px;min-height:40px;display:grid;place-items:center;border-radius:10px;border:2px solid var(--line2);font-weight:800;font-size:14px;cursor:pointer;background:#fff}
+.dias input:checked+span{background:var(--dark);color:#fff;border-color:var(--dark)}
+.dias input:focus-visible+span{outline:3px solid var(--blue)}
+.sw{display:inline-flex;align-items:center;gap:10px;cursor:pointer;font-weight:800}
+.sw input{width:22px;height:22px;accent-color:var(--green)}
+.toast{position:fixed;right:20px;bottom:20px;z-index:99;background:var(--dark);color:#fff;padding:14px 18px;border-radius:14px;font-weight:700;box-shadow:0 20px 40px -10px rgba(0,0,0,.4);transform:translateY(20px);opacity:0;transition:all .25s;max-width:calc(100vw - 40px);pointer-events:none}
+.toast.on{transform:none;opacity:1}
+/* modo Val */
+.val{background:var(--dark);color:#fff;border-radius:24px;padding:clamp(22px,3vw,36px)}
+.val h2{font:800 clamp(26px,3vw,36px)/1.1 var(--disp)}
+.val .big{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:22px 0}
+.val .big div{background:#151a15;border-radius:18px;padding:20px}
+.val .big span{color:#c9c5b8;font-size:16px}
+.val .big b{display:block;font:800 clamp(30px,4vw,48px)/1.1 var(--mono);margin-top:8px}
+.val .big .v b{color:#2fbf5b}.val .big .p b{color:#ff8a7e}.val .big .s b{color:#f2c64e}
+.passos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.passo{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px;display:flex;gap:14px}
+.passo .n{width:38px;height:38px;border-radius:50%;background:var(--dark);color:#f2c64e;display:grid;place-items:center;font:800 16px var(--mono);flex:none}
+.passo b{display:block;font-size:17px}
+.passo p{color:var(--ink2);font-size:15px;margin-top:4px}
+.bottom{display:none}
+@media(max-width:900px){
+  .app{grid-template-columns:minmax(0,1fr)}
+  .side{display:none}
+  .bottom{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--dark);padding:6px 6px calc(6px + env(safe-area-inset-bottom));gap:2px;overflow-x:auto}
+  .bottom .nv{flex:1 1 0;width:auto;min-width:0;flex-direction:column;gap:3px;font-size:11px;padding:8px 2px;justify-content:center;text-align:center}
+  .bottom .nv span{white-space:nowrap}
+  .kpi b{font-size:20px}.kpi{padding:14px}
+  .bottom .nv .bd{position:absolute;top:2px;right:6px;margin:0}
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .g2,.passos{grid-template-columns:minmax(0,1fr)}
+  .val .big{grid-template-columns:minmax(0,1fr)}
+  .grd.dz{gap:3px}.c{font-size:12px;border-radius:7px}
+  .c small{display:none}
+  .grd.gr{grid-template-columns:repeat(5,minmax(0,1fr))}
+  .grd.gr .c{min-height:52px;font-size:10.5px}
+  .rolar .hm{display:none}
+  .tabela.resp thead{display:none}
+  .tabela.resp tr{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;padding:14px 0;border-bottom:1px solid var(--line)}
+  .tabela.resp td{border:0;padding:0}
+  .tabela.resp td.cl{flex:1 1 100%;order:-1}
+  .tabela.resp td.ac{margin-left:auto}
+}
+</style>
+</head>
+<body>
+<div id="raiz"></div>
+<dialog id="dlg"><div class="mcx" id="mcx"></div></dialog>
+<div class="toast" id="toast" role="status"></div>
+<script src="../shared/data.js?v=20261117013041"></script>
+<script>
+(() => {
+const V = window.VAL, $ = s => document.querySelector(s), esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const brl = V.brl, pad = V.pad;
+const DIAS = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'], DIASL = ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado'];
+const hoje = () => V.ymd(new Date());
+const toast = m => { const t = $('#toast'); t.textContent = m; t.classList.add('on'); clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('on'), 3200); };
+const nomeS = s => s.tipo === 'federal' ? 'Rifa da Federal' : V.TIPOS[s.tipo].nome;
+const dataTx = s => { const d = V.horario(s); if (s.data === hoje()) return 'Hoje'; const am = new Date(); am.setDate(am.getDate() + 1); if (s.data === V.ymd(am)) return 'Amanhã'; const on = new Date(); on.setDate(on.getDate() - 1); if (s.data === V.ymd(on)) return 'Ontem'; return `${DIAS[d.getDay()]} ${pad(d.getDate())}/${pad(d.getMonth() + 1)}`; };
+const numTx = (s, n) => s.tipo === 'grupo' ? `G${pad(n)} ${V.BICHOS[n - 1].emoji}` : pad(n);
+const hm = iso => { const d = new Date(iso); return `${pad(d.getHours())}:${pad(d.getMinutes())}`; };
+const quandoTx = iso => { const d = new Date(iso); const k = V.ymd(d) === hoje() ? 'hoje' : `${pad(d.getDate())}/${pad(d.getMonth() + 1)}`; return `${k} ${hm(iso)}`; };
+const waLink = (tel, txt) => `https://wa.me/${V.soDig(tel)}?text=${encodeURIComponent(txt)}`;
+const stTag = s => s.status === 'aberta' ? (+V.fecha(s) > Date.now() ? '<span class="tag ab">vendendo</span>' : '<span class="tag en">aguardando resultado</span>') : s.status === 'encerrada' ? '<span class="tag en">aguardando resultado</span>' : '<span class="tag ap">apurado</span>';
+const pTag = p => ({ pago: '<span class="tag pg">pago</span>', reservado: '<span class="tag rs">aguardando Pix</span>', expirado: '<span class="tag ex">expirou</span>', cancelado: '<span class="tag cn">cancelado</span>' }[p.status]);
+const IC = {
+  hoje: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg>',
+  sort: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M8 9h.01M12 9h.01M16 9h.01M8 13h.01M12 13h.01M16 13h.01M8 17h.01"/></svg>',
+  ped: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16l-3-2-3 2-3-2-3 2-4-2z"/><path d="M8 9h8M8 13h5"/></svg>',
+  cli: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="4"/><path d="M2 21a7 7 0 0 1 14 0M17 4a4 4 0 0 1 0 8M22 21a7 7 0 0 0-4-6.3"/></svg>',
+  ag: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18"/></svg>',
+  cfg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg>',
+  val: '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="8.5" cy="8.5" r="4.5"/><circle cx="15.5" cy="8.5" r="4.5"/><circle cx="8.5" cy="15.5" r="4.5"/><circle cx="15.5" cy="15.5" r="4.5"/></svg>',
+  wa: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm4.5 12.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2c0 1.3.9 2.5 1.1 2.7.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></svg>',
+};
+const MENU = [['val', 'Modo Val', 'val'], ['hoje', 'Hoje', 'hoje'], ['sorteios', 'Sorteios', 'sort'], ['pedidos', 'Pedidos', 'ped'], ['clientes', 'Clientes', 'cli'], ['agenda', 'Agenda', 'ag'], ['ajustes', 'Ajustes', 'cfg']];
+const S = { tab: 'hoje', fPed: 'todos', qPed: '', qCli: '', fSort: 'hoje', marc: new Set(), sel: null };
+let logado = false; try { logado = sessionStorage.getItem('val_painel') === '1'; } catch (e) { }
+
+/* ---------- números do dia ---------- */
+function numerosDia(dia) {
+  const db = V.db(), ids = new Set(db.sorteios.filter(s => s.data === dia).map(s => s.id));
+  const pagos = db.pedidos.filter(p => p.status === 'pago' && ids.has(p.sorteio));
+  const arrec = pagos.reduce((a, p) => a + p.valor, 0);
+  const premios = db.sorteios.filter(s => s.data === dia && s.status === 'apurada' && s.ganhadorPedido).reduce((a, s) => a + s.premio, 0);
+  const pend = db.pedidos.filter(p => p.status === 'reservado');
+  return { arrec, premios, saldo: arrec - premios, pend, nPagos: pagos.length, cotas: pagos.reduce((a, p) => a + p.nums.length, 0) };
+}
+function pendencias() {
+  const db = V.db(), agora = Date.now();
+  const resultado = db.sorteios.filter(s => (s.status === 'encerrada' || (s.status === 'aberta' && +V.fecha(s) <= agora)) && +V.horario(s) <= agora + 6e4 * 10).sort((a, b) => V.horario(a) - V.horario(b));
+  const pix = db.pedidos.filter(p => p.status === 'reservado').sort((a, b) => new Date(a.criado) - new Date(b.criado));
+  const premio = db.sorteios.filter(s => s.status === 'apurada' && s.ganhadorPedido && !s.pagoPremio);
+  return { resultado, pix, premio, total: resultado.length + pix.length + premio.length };
+}
+
+/* ---------- render ---------- */
+function render() {
+  const r = $('#raiz');
+  if (!logado) {
+    r.innerHTML = `<div class="login"><div class="cx">
+      <svg viewBox="0 0 40 40" width="52" height="52"><rect width="40" height="40" rx="10" fill="#0a0c0a"/><g fill="#2fbf5b"><circle cx="15" cy="15" r="6.5"/><circle cx="25" cy="15" r="6.5"/><circle cx="15" cy="25" r="6.5"/><circle cx="25" cy="25" r="6.5"/></g></svg>
+      <h1>Painel Val Premiações</h1><p>Onde a equipe confere os Pix, lança os resultados e paga os ganhadores.</p>
+      <form id="fLogin"><label for="lu">Usuário</label><input id="lu" value="operador" autocomplete="username">
+      <label for="ls">Senha</label><input id="ls" type="password" value="demonstracao" autocomplete="current-password">
+      <button class="btn k" type="submit">Entrar</button></form>
+      <small>Demonstração Zync · os dados são de exemplo</small></div></div>`;
+    $('#fLogin').onsubmit = e => { e.preventDefault(); logado = true; try { sessionStorage.setItem('val_painel', '1'); } catch (er) { } render(); };
+    return;
+  }
+  const pd = pendencias();
+  const nav = MENU.map(([id, nm, ic]) => `<button class="nv" data-tab="${id}" ${S.tab === id ? 'aria-current="page"' : ''}>${IC[ic]}<span>${nm}</span>${id === 'hoje' && pd.total ? `<span class="bd">${pd.total}</span>` : ''}${id === 'pedidos' && pd.pix.length ? `<span class="bd">${pd.pix.length}</span>` : ''}</button>`).join('');
+  r.innerHTML = `<div class="app"><aside class="side"><div class="marca"><svg viewBox="0 0 40 40" width="36"><g fill="#2fbf5b"><circle cx="14.5" cy="14.5" r="8.5"/><circle cx="25.5" cy="14.5" r="8.5"/><circle cx="14.5" cy="25.5" r="8.5"/><circle cx="25.5" cy="25.5" r="8.5"/></g></svg><div><b>VAL</b><small>Painel</small></div></div>${nav}
+    <div class="rod"><a href="../index.html" target="_blank" rel="noopener">Abrir o site ↗</a><br><br>Demonstração Zync · dados de exemplo<br><button class="nv" style="padding:8px 0;font-size:13px" data-a="reset">Reiniciar demonstração</button><button class="nv" style="padding:8px 0;font-size:13px" data-a="sair">Sair</button></div></aside>
+    <main id="conteudo"></main></div><nav class="bottom">${nav}</nav>`;
+  ({ val: telaVal, hoje: telaHoje, sorteios: telaSorteios, pedidos: telaPedidos, clientes: telaClientes, agenda: telaAgenda, ajustes: telaAjustes })[S.tab]();
+}
+const demoBar = () => V.db().config.pix.conectado ? '' : `<div class="demo-bar">⚠️ <span>Pix em modo demonstração. Faça um pedido no <a href="../index.html#jogar" target="_blank" rel="noopener">site</a> em outra aba e veja ele cair aqui na hora.</span></div>`;
+
+function telaVal() {
+  const n = numerosDia(hoje()), db = V.db();
+  const prox = V.abertos()[0];
+  const sem = (() => { let a = 0, p = 0; for (let k = 0; k < 7; k++) { const d = new Date(); d.setDate(d.getDate() - k); const x = numerosDia(V.ymd(d)); a += x.arrec; p += x.premios; } return { a, p }; })();
+  $('#conteudo').innerHTML = `<div class="cab"><div><h1>Oi, Val 🍀</h1><p>O resumo do seu dia, sem complicação.</p></div></div>
+  <div class="val"><h2>Hoje, ${DIASL[new Date().getDay()]}</h2>
+    <div class="big"><div class="v"><span>Entrou no Pix</span><b>${brl(n.arrec)}</b></div><div class="p"><span>Saiu em prêmios</span><b>${brl(n.premios)}</b></div><div class="s"><span>Ficou pra você</span><b>${brl(n.saldo)}</b></div></div>
+    <p style="color:#c9c5b8">Últimos 7 dias: entrou <b style="color:#fff">${brl(sem.a)}</b>, saiu <b style="color:#fff">${brl(sem.p)}</b> em prêmios. ${prox ? `Próximo sorteio: <b style="color:#f2c64e">${nomeS(prox)} às ${prox.hora}</b>.` : ''}</p>
+  </div>
+  <h2 style="font:800 24px var(--disp);margin:30px 0 14px">Como o sistema funciona</h2>
+  <div class="passos">
+    <div class="passo"><span class="n">1</span><div><b>O cliente escolhe o número no site</b><p>Ele vê na hora quais números estão livres. Não tem mais número vendido duas vezes.</p></div></div>
+    <div class="passo"><span class="n">2</span><div><b>Paga no Pix e o sistema confere sozinho</b><p>O Pix cai na sua conta e o número fica marcado como pago. Ninguém precisa conferir print.</p></div></div>
+    <div class="passo"><span class="n">3</span><div><b>Saiu o resultado, a equipe lança aqui</b><p>Digita a milhar do 1º prêmio e o painel já mostra quem ganhou, com nome e WhatsApp.</p></div></div>
+    <div class="passo"><span class="n">4</span><div><b>Você paga o prêmio e posta</b><p>Um toque abre o WhatsApp do ganhador com a mensagem pronta. O resultado aparece no site sozinho.</p></div></div>
+  </div>`;
+}
+
+function telaHoje() {
+  const n = numerosDia(hoje()), pd = pendencias(), db = V.db();
+  const hojeS = db.sorteios.filter(s => s.data === hoje()).sort((a, b) => V.horario(a) - V.horario(b));
+  const fed = V.abertos().find(s => s.tipo === 'federal' && s.data !== hoje()); if (fed) hojeS.push(fed);
+  const acoes = [
+    ...pd.resultado.map(s => `<div class="acao"><span class="ic" style="background:var(--goldbg)">🎯</span><div class="tx"><b>Lançar resultado · ${nomeS(s)} ${s.hora}</b><span>${dataTx(s)} · ${s.extracao} · ${Object.values(V.ocupados(s)).filter(o => o.status === 'pago').length} cotas vendidas</span></div><div class="bt"><button class="btn k s" data-res="${s.id}">Lançar resultado</button></div></div>`),
+    ...pd.premio.map(s => { const p = V.pedido(s.ganhadorPedido); return `<div class="acao"><span class="ic" style="background:var(--greenbg)">🏆</span><div class="tx"><b>Pagar prêmio · ${esc(p.nome)}</b><span>${nomeS(s)} ${dataTx(s).toLowerCase()} ${s.hora} · deu ${numTx(s, s.numeroSorteado)} · ${brl(s.premio)}</span></div><div class="bt"><a class="btn g s" target="_blank" rel="noopener" href="${waLink(p.tel, msgGanhador(s, p))}">${IC.wa}Avisar</a><button class="btn o s" data-pago="${s.id}">Marcar como pago</button></div></div>`; }),
+    ...pd.pix.map(p => { const s = V.sorteio(p.sorteio); return `<div class="acao"><span class="ic" style="background:var(--bluebg)">⏳</span><div class="tx"><b>Pix aguardando · ${esc(p.nome)}</b><span>${s ? nomeS(s) + ' ' + s.hora : ''} · ${s ? p.nums.map(x => numTx(s, x)).join(', ') : ''} · ${brl(p.valor)} · expira ${hm(V.validade(p).toISOString())}</span></div><div class="bt"><button class="btn o s" data-conf="${p.id}">Confirmar na mão</button></div></div>`; }),
+  ];
+  $('#conteudo').innerHTML = `<div class="cab"><div><h1>Hoje</h1><p>${DIASL[new Date().getDay()]}, ${new Date().toLocaleDateString('pt-BR')}</p></div><a class="btn o" href="../index.html" target="_blank" rel="noopener">Ver o site ↗</a></div>
+  ${demoBar()}
+  <div class="kpis">
+    <div class="kpi dest"><span>Entrou hoje (Pix pago)</span><b>${brl(n.arrec)}</b><small>${n.cotas} cotas em ${n.nPagos} bilhetes</small></div>
+    <div class="kpi"><span>Prêmios de hoje</span><b>${brl(n.premios)}</b><small>já apurados</small></div>
+    <div class="kpi"><span>Saldo do dia</span><b style="color:${n.saldo >= 0 ? 'var(--green)' : 'var(--red)'}">${brl(n.saldo)}</b><small>entrou − prêmios</small></div>
+    <div class="kpi"><span>Pix aguardando</span><b>${n.pend.length}</b><small>${brl(n.pend.reduce((a, p) => a + p.valor, 0))} em reserva</small></div>
+  </div>
+  <div class="card"><h2>Precisa de você ${pd.total ? `<span class="tag rs">${pd.total}</span>` : ''}</h2><p class="sub">Resultados para lançar, prêmios para pagar e Pix que ainda não caíram.</p>${acoes.join('') || '<p class="vazio">Tudo em dia. ✅</p>'}</div>
+  <div class="card"><h2>Sorteios de hoje</h2><p class="sub">Toque num sorteio para ver os números, vender pelo WhatsApp ou lançar o resultado.</p><div class="sorteios">${hojeS.map(cardS).join('')}</div></div>`;
+}
+function cardS(s) {
+  const oc = Object.values(V.ocupados(s)), pg = oc.filter(o => o.status === 'pago').length, rs = oc.length - pg;
+  const arrec = V.db().pedidos.filter(p => p.sorteio === s.id && p.status === 'pago').reduce((a, p) => a + p.valor, 0);
+  const res = s.status === 'apurada' ? `<div class="nums"><span>Deu <b>${numTx(s, s.numeroSorteado)}</b></span><span>${s.ganhadorPedido ? '🏆 ' + esc(V.pedido(s.ganhadorPedido).nome.split(' ')[0]) : 'sem ganhador'}</span></div>` : '';
+  return `<button class="st" data-s="${s.id}"><div class="top"><span class="hr">${s.hora}</span>${stTag(s)}</div><div class="q">${nomeS(s)}<span>${dataTx(s)} · ${s.extracao} · ${V.brl0(s.cota)} → ${V.brl0(s.premio)}</span></div>
+    <div class="prog"><i style="width:${Math.round(pg / s.total * 100)}%"></i></div><div class="nums"><span><b>${pg}</b>/${s.total} pagas${rs ? ` · ${rs} reservadas` : ''}</span><span><b>${brl(arrec)}</b></span></div>${res}</button>`;
+}
+function msgGanhador(s, p) { return `Parabéns ${p.nome.split(' ')[0]}! 🍀🏆\nVocê ganhou a ${nomeS(s)} de ${dataTx(s).toLowerCase()} às ${s.hora} com o ${s.tipo === 'grupo' ? 'grupo ' + pad(s.numeroSorteado) + ' (' + V.BICHOS[s.numeroSorteado - 1].nome + ')' : 'número ' + pad(s.numeroSorteado)}.\nPrêmio: ${V.brl0(s.premio)}${s.premioDesc ? ' (' + s.premioDesc + ')' : ''}.\nMe manda sua chave Pix que eu já faço o pagamento. Val Premiações`; }
+
+function telaSorteios() {
+  const db = V.db(), h = hoje();
+  const f = S.fSort;
+  let l = db.sorteios.filter(s => f === 'hoje' ? s.data === h : f === 'prox' ? s.data > h : s.data < h);
+  l.sort((a, b) => f === 'pass' ? V.horario(b) - V.horario(a) : V.horario(a) - V.horario(b));
+  if (f === 'pass') l = l.slice(0, 30);
+  $('#conteudo').innerHTML = `<div class="cab"><div><h1>Sorteios</h1><p>Abra um sorteio para ver quem comprou cada número.</p></div><button class="btn k" data-a="novo">+ Sorteio avulso</button></div>
+  <div class="filtros">${[['hoje', 'Hoje'], ['prox', 'Próximos'], ['pass', 'Anteriores']].map(([k, n]) => `<button class="chip" data-fs="${k}" aria-pressed="${f === k}">${n}</button>`).join('')}</div>
+  <div class="sorteios">${l.map(cardS).join('') || '<p class="vazio">Nada por aqui.</p>'}</div>`;
+}
+
+function telaPedidos() {
+  const db = V.db(); const q = S.qPed.toLowerCase();
+  let l = db.pedidos.slice().sort((a, b) => new Date(b.criado) - new Date(a.criado));
+  if (S.fPed !== 'todos') l = l.filter(p => p.status === S.fPed);
+  if (q) l = l.filter(p => (p.nome + ' ' + p.tel + ' ' + p.id).toLowerCase().includes(q));
+  const tot = l.length; l = l.slice(0, 120);
+  $('#conteudo').innerHTML = `<div class="cab"><div><h1>Pedidos</h1><p>Cada bilhete comprado no site ou registrado pelo WhatsApp.</p></div></div>
+  <div class="filtros">${[['todos', 'Todos'], ['reservado', 'Aguardando Pix'], ['pago', 'Pagos'], ['expirado', 'Expirados'], ['cancelado', 'Cancelados']].map(([k, n]) => `<button class="chip" data-fp="${k}" aria-pressed="${S.fPed === k}">${n}</button>`).join('')}<input class="busca" id="qPed" placeholder="Buscar nome, telefone ou bilhete" value="${esc(S.qPed)}"></div>
+  <div class="card"><div class="rolar"><table class="tabela resp"><thead><tr><th>Bilhete</th><th>Cliente</th><th>Sorteio</th><th>Números</th><th>Valor</th><th class="hm">Quando</th><th>Status</th><th></th></tr></thead><tbody>
+  ${l.map(p => { const s = V.sorteio(p.sorteio); return `<tr><td class="num">${p.id}</td><td class="cl"><b>${esc(p.nome)}</b><br><small style="color:var(--ink3)">${V.fmtTel(p.tel)}</small></td><td>${s ? nomeS(s).replace('Rifa de ', '').replace('Rifa da ', '') + ' ' + s.hora + '<br><small style="color:var(--ink3)">' + dataTx(s) + '</small>' : '—'}</td><td class="num">${s ? p.nums.map(n => numTx(s, n)).join(' ') : ''}</td><td class="num">${brl(p.valor)}</td><td class="hm">${quandoTx(p.criado)}${p.canal === 'whatsapp' ? '<br><small style="color:var(--ink3)">venda no WhatsApp</small>' : ''}</td><td>${pTag(p)}${s && s.ganhadorPedido === p.id ? ' <span class="tag win">🏆</span>' : ''}</td><td class="ac" style="white-space:nowrap">${p.status === 'reservado' ? `<button class="btn g s" data-conf="${p.id}">Confirmar</button> <button class="btn r s" data-canc="${p.id}">Cancelar</button>` : `<a class="btn o s" target="_blank" rel="noopener" href="${waLink(p.tel, 'Oi ' + p.nome.split(' ')[0] + '! Aqui é da Val Premiações 🍀')}" aria-label="WhatsApp de ${esc(p.nome)}">${IC.wa}</a>`}</td></tr>`; }).join('') || '<tr><td colspan="8" class="vazio">Nenhum pedido.</td></tr>'}
+  </tbody></table></div>${tot > 120 ? `<p class="vazio">Mostrando 120 de ${tot}. Use a busca.</p>` : ''}</div>`;
+  const i = $('#qPed'); i.oninput = () => { S.qPed = i.value; const pos = i.selectionStart; telaPedidos(); const j = $('#qPed'); j.focus(); j.setSelectionRange(pos, pos); };
+}
+
+function clientes() {
+  const db = V.db(), m = {};
+  for (const p of db.pedidos) {
+    const k = p.tel; m[k] = m[k] || { nome: p.nome, tel: p.tel, gasto: 0, bilhetes: 0, vitorias: 0, ultimo: p.criado, premios: 0 };
+    const c = m[k]; if (p.status === 'pago') { c.gasto += p.valor; c.bilhetes++; }
+    if (new Date(p.criado) > new Date(c.ultimo)) { c.ultimo = p.criado; c.nome = p.nome; }
+  }
+  for (const s of db.sorteios) if (s.ganhadorPedido) { const p = db.pedidos.find(x => x.id === s.ganhadorPedido); if (p && m[p.tel]) { m[p.tel].vitorias++; m[p.tel].premios += s.premio; } }
+  return Object.values(m).filter(c => c.bilhetes).sort((a, b) => b.gasto - a.gasto);
+}
+function telaClientes() {
+  const q = S.qCli.toLowerCase(); let l = clientes(); const tot = l.length;
+  if (q) l = l.filter(c => (c.nome + c.tel).toLowerCase().includes(q));
+  $('#conteudo').innerHTML = `<div class="cab"><div><h1>Clientes</h1><p>${tot} pessoas já jogaram. Quem mais joga aparece primeiro.</p></div><button class="btn o" data-a="csv">Baixar planilha (CSV)</button></div>
+  <div class="filtros"><input class="busca" id="qCli" placeholder="Buscar nome ou telefone" value="${esc(S.qCli)}"></div>
+  <div class="card"><div class="rolar"><table class="tabela resp"><thead><tr><th>Cliente</th><th>Bilhetes</th><th>Gastou</th><th>Ganhou</th><th class="hm">Último jogo</th><th></th></tr></thead><tbody>
+  ${l.map(c => `<tr><td class="cl"><b>${esc(c.nome)}</b><br><small style="color:var(--ink3)">${V.fmtTel(c.tel)}</small></td><td class="num">${c.bilhetes} <small style="font:600 13px var(--body);color:var(--ink3)">bilhetes</small></td><td class="num">${brl(c.gasto)}</td><td>${c.vitorias ? `<span class="tag win">🏆 ${c.vitorias}× · ${V.brl0(c.premios)}</span>` : '<span style="color:var(--ink3)">—</span>'}</td><td class="hm">${quandoTx(c.ultimo)}</td><td class="ac"><a class="btn o s" target="_blank" rel="noopener" href="${waLink(c.tel, 'Oi ' + c.nome.split(' ')[0] + '! Aqui é o Val 🍀 Rifa nova aberta, bora?')}">${IC.wa}Chamar</a></td></tr>`).join('') || '<tr><td colspan="6" class="vazio">Ninguém encontrado.</td></tr>'}
+  </tbody></table></div></div>`;
+  const i = $('#qCli'); i.oninput = () => { S.qCli = i.value; const pos = i.selectionStart; telaClientes(); const j = $('#qCli'); j.focus(); j.setSelectionRange(pos, pos); };
+}
+
+function telaAgenda() {
+  const db = V.db();
+  $('#conteudo').innerHTML = `<div class="cab"><div><h1>Agenda fixa</h1><p>Os sorteios que abrem sozinhos todo dia. Mudança aqui vale para os próximos dias que ainda não abriram.</p></div></div>
+  ${db.agenda.map((a, i) => `<div class="card"><form data-ag="${i}">
+    <h2>${a.hora} · ${V.TIPOS[a.tipo].nome} <label class="sw" style="margin-left:auto;font-size:15px"><input type="checkbox" name="ativo" ${a.ativo !== false ? 'checked' : ''}> ativo</label></h2>
+    <div class="row"><label class="fld"><span>Horário</span><input name="hora" type="time" value="${a.hora}" required></label>
+    <label class="fld"><span>Cota (R$)</span><input name="cota" type="number" min="1" step="0.5" value="${a.cota}" required></label>
+    <label class="fld"><span>Prêmio (R$)</span><input name="premio" type="number" min="1" step="1" value="${a.premio}" required></label>
+    <label class="fld"><span>Extração</span><input name="extracao" value="${esc(a.extracao)}"></label></div>
+    <div class="fld"><span>Dias</span><div class="dias">${DIAS.map((d, k) => `<label><input type="checkbox" name="d${k}" ${a.dias.includes(k) ? 'checked' : ''}><span>${d}</span></label>`).join('')}</div></div>
+    <p style="color:var(--ink3);font-size:14px;margin-top:12px">${V.TIPOS[a.tipo].total} cotas · arrecadação cheia ${brl(a.cota * V.TIPOS[a.tipo].total)} · margem ${brl(a.cota * V.TIPOS[a.tipo].total - a.premio)} se vender tudo${a.exemplo ? ' · <b>valores de exemplo, confirmar</b>' : ''}</p>
+    <div style="margin-top:12px"><button class="btn k s" type="submit">Salvar</button></div></form></div>`).join('')}`;
+}
+
+function telaAjustes() {
+  const c = V.db().config;
+  $('#conteudo').innerHTML = `<div class="cab"><div><h1>Ajustes</h1><p>Pix, tempo de reserva e lista VIP.</p></div></div>
+  <div class="card"><h2>Recebimento por Pix ${c.pix.conectado ? '<span class="tag pg">conectado</span>' : '<span class="tag rs">demonstração</span>'}</h2>
+    <p class="sub">Com a conta conectada, o Pix do cliente cai direto na conta do Val e o número é confirmado sozinho, sem ninguém conferir print.</p>
+    <div class="row"><label class="fld"><span>Banco / gateway</span><select id="cGw"><option value="mercadopago" ${c.pix.gateway === 'mercadopago' ? 'selected' : ''}>Mercado Pago</option><option value="efi" ${c.pix.gateway === 'efi' ? 'selected' : ''}>Efí (Gerencianet)</option><option value="asaas" ${c.pix.gateway === 'asaas' ? 'selected' : ''}>Asaas</option></select></label>
+    <label class="fld"><span>Nome que aparece no Pix</span><input id="cNomeR" value="${esc(c.pix.nomeRecebedor)}" maxlength="25"></label></div>
+    <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap"><button class="btn ${c.pix.conectado ? 'r' : 'g'}" data-a="pixTog">${c.pix.conectado ? 'Desconectar conta' : 'Conectar conta (demonstração)'}</button></div>
+    <p style="color:var(--ink3);font-size:14px;margin-top:12px">Na versão final, a conexão é feita com as credenciais da conta do Val. Nesta demonstração nenhum dinheiro é movimentado.</p></div>
+  <div class="card"><h2>Regras de venda</h2>
+    <div class="row"><label class="fld"><span>Reserva do número (minutos)</span><input id="cRes" type="number" min="3" max="60" value="${c.reservaMin}"></label>
+    <label class="fld"><span>Fechar vendas antes do sorteio (minutos)</span><input id="cFec" type="number" min="0" max="120" value="${c.encerraAntesMin}"></label></div>
+    <label class="fld"><span>Link da lista VIP</span><input id="cVip" value="${esc(c.grupoVip)}"></label>
+    <div style="margin-top:14px"><button class="btn k" data-a="salvaCfg">Salvar</button></div></div>
+  <div class="card"><h2>Demonstração</h2><p class="sub">Volta tudo para os dados de exemplo.</p><button class="btn r" data-a="reset">Reiniciar demonstração</button></div>`;
+}
+
+/* ---------- modais ---------- */
+const dlg = $('#dlg'), mcx = $('#mcx');
+function abreM(html, pequeno) { mcx.innerHTML = html; dlg.className = pequeno ? 'p' : ''; if (!dlg.open) dlg.showModal(); }
+function fechaM() { dlg.close(); S.sel = null; S.marc.clear(); }
+dlg.addEventListener('click', e => { if (e.target === dlg) fechaM(); });
+dlg.addEventListener('close', () => { S.sel = null; S.marc.clear(); });
+
+function modalSorteio(id) {
+  const s = V.sorteio(id); if (!s) return; S.sel = id;
+  const oc = V.ocupados(s), db = V.db();
+  const peds = db.pedidos.filter(p => p.sorteio === id && (p.status === 'pago' || p.status === 'reservado')).sort((a, b) => a.nums[0] - b.nums[0]);
+  const arrec = peds.filter(p => p.status === 'pago').reduce((a, p) => a + p.valor, 0);
+  const livres = V.numeros(s).filter(n => !oc[n]);
+  const vendendo = s.status === 'aberta' && +V.fecha(s) > Date.now();
+  const cel = n => { const o = oc[n], c = o ? (o.status === 'pago' ? 'pg' : 'rs') : S.marc.has(n) ? 'mk' : ''; const w = s.numeroSorteado === n && s.status === 'apurada' ? ' win' : '';
+    const lab = s.tipo === 'grupo' ? `<i>${V.BICHOS[n - 1].emoji}</i>${pad(n)}` : pad(n);
+    return `<button class="c ${c}${w}" data-c="${n}" ${o || !vendendo ? 'disabled' : ''} title="${o ? esc(o.nome) : 'livre'}">${lab}${o ? `<small>${esc(o.nome.split(' ')[0])}</small>` : ''}</button>`; };
+  const g = s.ganhadorPedido && V.pedido(s.ganhadorPedido);
+  abreM(`<div class="mcab"><div><h3>${nomeS(s)} · ${s.hora}</h3><p>${dataTx(s)} · ${s.extracao} · cota ${V.brl0(s.cota)} · prêmio ${V.brl0(s.premio)}</p></div><button class="fx" data-x aria-label="Fechar">×</button></div>
+    <div class="kpis" style="grid-template-columns:repeat(3,minmax(0,1fr));margin-bottom:12px"><div class="kpi"><span>Pagas</span><b>${Object.values(oc).filter(o => o.status === 'pago').length}/${s.total}</b></div><div class="kpi"><span>Entrou</span><b>${brl(arrec)}</b></div><div class="kpi"><span>Livres</span><b>${livres.length}</b></div></div>
+    ${s.status === 'apurada' ? `<div class="preview" style="margin:0 0 14px">1º prêmio <b class="mono">${s.resultado}</b> → deu <b class="big">${numTx(s, s.numeroSorteado)}</b>${s.tipo === 'grupo' ? ' ' + V.BICHOS[s.numeroSorteado - 1].nome : ''}<br>${g ? `🏆 <b>${esc(g.nome)}</b> · ${V.fmtTel(g.tel)} · bilhete ${g.id} ${s.pagoPremio ? '<span class="tag pg">prêmio pago</span>' : `<div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap"><a class="btn g s" target="_blank" rel="noopener" href="${waLink(g.tel, msgGanhador(s, g))}">${IC.wa}Avisar ganhador</a><button class="btn o s" data-pago="${s.id}">Marcar prêmio pago</button></div>`}` : 'Esse número não foi vendido: o prêmio fica com a casa.'}</div>` : ''}
+    <div class="leg2"><span><i></i>livre</span><span><i style="background:#0a0c0a;border-color:#0a0c0a"></i>pago</span><span><i style="background:var(--goldbg);border-color:#e7c25a"></i>aguardando Pix</span>${vendendo ? '<span><i style="background:#f2c64e;border-color:var(--gold)"></i>marcado para venda no WhatsApp</span>' : ''}</div>
+    <div class="grd ${s.tipo === 'grupo' ? 'gr' : 'dz'}" id="grdM">${V.numeros(s).map(cel).join('')}</div>
+    ${vendendo ? `<div class="card" style="margin-top:14px" id="vendaW"><h2>Venda pelo WhatsApp</h2><p class="sub">Cliente pagou direto pra você? Marque os números na grade acima e registre aqui.</p>
+      <div class="row"><label class="fld"><span>Nome</span><input id="vwN"></label><label class="fld"><span>WhatsApp</span><input id="vwT" inputmode="tel" placeholder="(71) 9 0000-0000"></label></div>
+      <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;align-items:center"><button class="btn k" data-a="vendaW" ${S.marc.size ? '' : 'disabled'}>Registrar ${S.marc.size || ''} ${S.marc.size === 1 ? 'número' : 'números'} como pago</button><span style="color:var(--ink2)">${S.marc.size ? brl(S.marc.size * s.cota) : ''}</span></div></div>` : ''}
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
+      ${s.status !== 'apurada' ? `<button class="btn k" data-res="${s.id}">Lançar resultado</button>` : ''}
+      ${vendendo ? `<button class="btn o" data-a="copiaLivres">Copiar números livres</button><button class="btn r" data-a="encerra">Fechar vendas agora</button>` : ''}
+    </div>
+    <h3 style="font:800 18px var(--disp);margin:22px 0 8px">Compradores</h3>
+    <div class="rolar"><table class="tabela"><tbody>${peds.map(p => `<tr><td class="num">${p.nums.map(n => numTx(s, n)).join(' ')}</td><td><b>${esc(p.nome)}</b><br><small style="color:var(--ink3)">${V.fmtTel(p.tel)}</small></td><td>${pTag(p)}${p.canal === 'whatsapp' ? ' <small style="color:var(--ink3)">WhatsApp</small>' : ''}</td><td class="num">${brl(p.valor)}</td></tr>`).join('') || '<tr><td class="vazio">Ninguém comprou ainda.</td></tr>'}</tbody></table></div>`);
+}
+
+function modalResultado(id) {
+  const s = V.sorteio(id); if (!s) return;
+  abreM(`<div class="mcab"><div><h3>Lançar resultado</h3><p>${nomeS(s)} · ${dataTx(s)} ${s.hora} · ${s.extracao}</p></div><button class="fx" data-x aria-label="Fechar">×</button></div>
+    <label class="fld"><span>Milhar do 1º prêmio (${s.tipo === 'federal' ? 'Loteria Federal' : 'extração da Bahia'})</span><input id="milhar" inputmode="numeric" maxlength="5" placeholder="ex.: 4872" style="font:800 28px var(--mono);min-height:64px;letter-spacing:.2em"></label>
+    <div class="preview" id="prevRes">Digite a milhar para ver quem ganhou.</div>
+    <button class="btn k" style="width:100%;margin-top:16px;min-height:52px" id="btnApura" disabled>Confirmar resultado</button>
+    <p style="color:var(--ink3);font-size:13.5px;margin-top:10px;text-align:center">Confira duas vezes: depois de confirmado, o resultado aparece no site.</p>`, true);
+  const inp = $('#milhar'), prev = $('#prevRes'), bt = $('#btnApura');
+  inp.focus();
+  inp.oninput = () => {
+    const m = V.soDig(inp.value); inp.value = m;
+    if (m.length < 4) { prev.innerHTML = 'Digite a milhar para ver quem ganhou.'; bt.disabled = true; return; }
+    const dz = +m.slice(-2), g = V.grupoDe(dz), n = s.tipo === 'grupo' ? g : dz, o = V.ocupados(s)[n];
+    prev.innerHTML = `Dezena <b class="big">${pad(dz)}</b> · grupo <b class="big">${pad(g)}</b> ${V.BICHOS[g - 1].emoji} ${V.BICHOS[g - 1].nome}<br>Vale para esta rifa: <b>${numTx(s, n)}</b><br>${o && o.status === 'pago' ? `🏆 Ganhador: <b>${esc(o.nome)}</b>` : o ? `⚠️ Número reservado por ${esc(o.nome)}, mas o Pix não caiu: <b>não conta</b>.` : 'Esse número não foi vendido.'}`;
+    bt.disabled = false;
+  };
+  bt.onclick = () => { const r = V.apurar(id, inp.value); toast(r.ganhadorPedido ? `Resultado lançado. Ganhador: ${V.pedido(r.ganhadorPedido).nome}` : 'Resultado lançado. Sem ganhador.'); modalSorteio(id); };
+}
+
+function modalNovo() {
+  const am = new Date(); am.setDate(am.getDate() + 1);
+  abreM(`<div class="mcab"><div><h3>Sorteio avulso</h3><p>Para premiação especial (iPhone, TV, Pix maior).</p></div><button class="fx" data-x aria-label="Fechar">×</button></div>
+    <form id="fNovo"><div class="row"><label class="fld"><span>Tipo</span><select name="tipo"><option value="federal">Federal (100 dezenas)</option><option value="dezena">Dezena (100 dezenas)</option><option value="grupo">Grupo (25 bichos)</option></select></label>
+    <label class="fld"><span>Dia</span><input name="data" type="date" value="${V.ymd(am)}" required></label><label class="fld"><span>Hora</span><input name="hora" type="time" value="19:00" required></label></div>
+    <div class="row"><label class="fld"><span>Cota (R$)</span><input name="cota" type="number" min="1" step="0.5" value="20" required></label><label class="fld"><span>Prêmio em R$ (valor)</span><input name="premio" type="number" min="1" value="1500" required></label></div>
+    <label class="fld"><span>Descrição do prêmio (opcional)</span><input name="desc" placeholder="ex.: iPhone 15 ou R$ 1.500 no Pix"></label>
+    <label class="fld"><span>Extração</span><input name="extracao" value="Loteria Federal"></label>
+    <button class="btn k" style="width:100%;margin-top:16px" type="submit">Criar e abrir vendas</button></form>`, true);
+  $('#fNovo').onsubmit = e => {
+    e.preventDefault(); const f = new FormData(e.target);
+    V.save(db => { const id = `${f.get('data')}-av${Date.now().toString(36).slice(-4)}`; const tipo = f.get('tipo');
+      db.sorteios.push({ id, modelo: 'avulso', tipo, data: f.get('data'), hora: f.get('hora'), cota: +f.get('cota'), premio: +f.get('premio'), total: V.TIPOS[tipo].total, extracao: f.get('extracao') || V.TIPOS[tipo].nome, status: 'aberta', resultado: null, numeroSorteado: null, ganhadorPedido: null, apuradoEm: null, pagoPremio: false, premioDesc: f.get('desc') || '' }); });
+    fechaM(); S.tab = 'sorteios'; S.fSort = f.get('data') === hoje() ? 'hoje' : 'prox'; render(); toast('Sorteio criado. Já aparece no site.');
+  };
+}
+
+/* ---------- eventos ---------- */
+document.addEventListener('click', e => {
+  const t = e.target.closest('button,a'); if (!t) return;
+  const d = t.dataset;
+  if (d.tab) { S.tab = d.tab; render(); scrollTo(0, 0); return; }
+  if (d.x !== undefined) { fechaM(); return; }
+  if (d.s) return modalSorteio(d.s);
+  if (d.res) return modalResultado(d.res);
+  if (d.conf) { V.confirmarPagamento(d.conf, 'confirmado no painel'); toast('Pagamento confirmado.'); return; }
+  if (d.canc) { if (confirm('Cancelar esse pedido? Os números voltam a ficar livres.')) { V.cancelar(d.canc, 'cancelado no painel'); toast('Pedido cancelado.'); } return; }
+  if (d.pago) { V.save(db => { const s = db.sorteios.find(x => x.id === d.pago); if (s) s.pagoPremio = true; }); toast('Prêmio marcado como pago.'); if (S.sel) modalSorteio(S.sel); return; }
+  if (d.fs) { S.fSort = d.fs; render(); return; }
+  if (d.fp) { S.fPed = d.fp; render(); return; }
+  if (d.c && S.sel) { const n = +d.c; S.marc.has(n) ? S.marc.delete(n) : S.marc.add(n); const nm = $('#vwN')?.value, tl = $('#vwT')?.value; modalSorteio(S.sel); if (nm) $('#vwN').value = nm; if (tl) $('#vwT').value = tl; return; }
+  const a = d.a;
+  if (a === 'novo') return modalNovo();
+  if (a === 'sair') { logado = false; try { sessionStorage.removeItem('val_painel'); } catch (er) { } render(); return; }
+  if (a === 'reset') { if (confirm('Reiniciar a demonstração? Tudo volta aos dados de exemplo.')) { V.reset(); toast('Demonstração reiniciada.'); } return; }
+  if (a === 'csv') { const l = clientes(); const csv = 'nome;whatsapp;bilhetes;gastou;vitorias;ultimo_jogo\n' + l.map(c => [c.nome, c.tel, c.bilhetes, c.gasto.toFixed(2).replace('.', ','), c.vitorias, c.ultimo.slice(0, 10)].join(';')).join('\n'); const b = new Blob(['﻿' + csv], { type: 'text/csv' }); const u = URL.createObjectURL(b); const x = document.createElement('a'); x.href = u; x.download = 'clientes-val-premiacoes.csv'; x.click(); setTimeout(() => URL.revokeObjectURL(u), 2000); return; }
+  if (a === 'copiaLivres') { const s = V.sorteio(S.sel); const l = V.livres(s); const txt = `🍀 VAL PREMIAÇÕES\n${nomeS(s)} · ${dataTx(s).toLowerCase()} ${s.hora}\n${V.brl0(s.cota)} pra ganhar ${V.brl0(s.premio)}\n\nNúmeros livres:\n${l.map(n => s.tipo === 'grupo' ? `${V.BICHOS[n - 1].emoji} ${pad(n)} ${V.BICHOS[n - 1].nome}` : pad(n)).join(s.tipo === 'grupo' ? '\n' : '  ')}\n\nGaranta o seu: ${location.href.replace(/painel\/.*$/, '')}#jogar`; (navigator.clipboard ? navigator.clipboard.writeText(txt) : Promise.reject()).then(() => toast('Lista copiada. Cole no grupo do WhatsApp.'), () => toast('Não deu pra copiar neste navegador.')); return; }
+  if (a === 'encerra') { if (confirm('Fechar as vendas desse sorteio agora?')) { V.save(db => { const s = db.sorteios.find(x => x.id === S.sel); if (s) s.status = 'encerrada'; }); toast('Vendas fechadas.'); modalSorteio(S.sel); } return; }
+  if (a === 'vendaW') { const nm = $('#vwN').value.trim(), tl = V.soDig($('#vwT').value); if (nm.length < 2 || tl.length < 10) return toast('Preencha nome e WhatsApp com DDD.'); const r = V.reservar(S.sel, [...S.marc], nm, tl); if (r.erro) { toast(r.erro === 'conflito' ? 'Algum número acabou de ser vendido no site. Confira a grade.' : r.erro); S.marc.clear(); modalSorteio(S.sel); return; } V.save(db => { const p = db.pedidos.find(x => x.id === r.pedido.id); p.canal = 'whatsapp'; }); V.confirmarPagamento(r.pedido.id, 'venda no WhatsApp'); S.marc.clear(); toast(`Venda registrada para ${nm}.`); modalSorteio(S.sel); return; }
+  if (a === 'pixTog') { V.save(db => { const p = db.config.pix; p.conectado = !p.conectado; p.gateway = $('#cGw').value; p.nomeRecebedor = $('#cNomeR').value || p.nomeRecebedor; p.conta = p.conectado ? 'Val Premiações (demonstração)' : ''; }); toast(V.db().config.pix.conectado ? 'Conta conectada (demonstração).' : 'Conta desconectada.'); return; }
+  if (a === 'salvaCfg') { V.save(db => { const c = db.config; c.reservaMin = Math.max(3, +$('#cRes').value || 10); c.encerraAntesMin = Math.max(0, +$('#cFec').value || 0); c.grupoVip = $('#cVip').value.trim() || c.grupoVip; c.pix.nomeRecebedor = $('#cNomeR').value || c.pix.nomeRecebedor; c.pix.gateway = $('#cGw').value; }); toast('Ajustes salvos.'); return; }
+});
+document.addEventListener('submit', e => {
+  const f = e.target.closest('[data-ag]'); if (!f) return; e.preventDefault();
+  const i = +f.dataset.ag, fd = new FormData(f);
+  const dias = DIAS.map((_, k) => fd.get('d' + k) ? k : -1).filter(k => k >= 0);
+  if (!dias.length) return toast('Escolha pelo menos um dia.');
+  V.save(db => { const a = db.agenda[i]; a.hora = fd.get('hora'); a.cota = +fd.get('cota'); a.premio = +fd.get('premio'); a.extracao = fd.get('extracao'); a.dias = dias; a.ativo = !!fd.get('ativo'); delete a.exemplo; });
+  toast('Agenda salva. Vale para os próximos dias.');
+});
+
+/* ---------- tempo real ---------- */
+const vistos = new Set(V.db().pedidos.map(p => p.id));
+V.on(src => {
+  const db = V.db();
+  for (const p of db.pedidos) if (!vistos.has(p.id)) { vistos.add(p.id); if (src === 'remote' && logado) toast(`🔔 Novo pedido: ${p.nome} · ${brl(p.valor)}`); }
+  if (!logado) return;
+  const ae = document.activeElement, emBusca = ae && (ae.id === 'qPed' || ae.id === 'qCli');
+  const editando = ae && ae.closest && ae.closest('form[data-ag], #fNovo, #vendaW, .card input');
+  if (!emBusca && !editando) render();
+  if (dlg.open && S.sel && !$('#milhar') && !(ae && ae.closest && ae.closest('#vendaW'))) { const nm = $('#vwN')?.value, tl = $('#vwT')?.value; modalSorteio(S.sel); if (nm) $('#vwN').value = nm; if (tl) $('#vwT').value = tl; }
+});
+render();
+})();
+</script>
+</body>
+</html>
